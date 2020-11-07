@@ -30,4 +30,9 @@ proj4string(datos51)<- proj4string(Colombia)
 plot(Colombia, border="grey", axes=TRUE,col="green")
 Colab<-datos51[Colombia, ]
 plot(Colab, add=T, col="blue", pch=20, cex=0.9)
-title(main= "Ruta migratoria en Colombia Platyrrhinus chocoensis", cex.main = 1, font.main = 1) 
+title(main= "Ruta migratoria en Colombia Platyrrhinus chocoensis", cex.main = 1, font.main = 1)
+
+###FUENTE DE LOS DATOS - Modificado de: ############
+## Chamberlain, S. (2017). rgbif: Interface to the Global Biodiversity Information Facility API. R package version 0.9.8. https://CRAN.R-project.org/package=rgbif
+##Hijmans, R. J., & Elith, J. (2015). Species distribution modeling with R. https://cran.r-project.org/web/packages/dismo/vignettes/sdm.pdf. 
+## Noguera, E. (2015). Descarga y limpieza de datos GBIF en R Cran. https://sites.google.com/site/elkalexnoguera/home/Trucos_R_Cran/descarga-y-limpieza-de-datos-gbif-en-r-cran
