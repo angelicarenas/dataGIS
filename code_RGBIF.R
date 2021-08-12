@@ -45,7 +45,7 @@ plot(Colombia, border="grey", axes=TRUE,col="green")
 Colab<-datos51[Colombia, ]
 plot(Colab, add=T, col="blue", pch=20, cex=0.9)
 title(main= "Registros en Colombia de Buteo albigula desde GBIF", cex.main = 1, font.main = 1)
-north.arrow(xb=-78, yb=10, len=1, lab="N",cex.lab=0.8,col="black")
+north.arrow(xb=-78, yb=10, len=0.5, lab="N",cex.lab=0.8,col="black")
 map.scale (xc=-80, yc=-3, ft2km(9000), "300 km", 1, 1)
 
 ###FUENTE DE LOS DATOS - Modificado de: ############
