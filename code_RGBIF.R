@@ -39,7 +39,8 @@ north.arrow(xb=-100, yb=100, len=3, lab="N",cex.lab=0.8,col="black")
 map.scale (xc=-130, yc=-50, ft2km(280000), "10000 km", 1, 1)
 
 Colombia<-wrld_simpl[wrld_simpl$NAME=="Colombia", ]
-proj4string(datos51)<- proj4string(Colombia)
+crs(datos51) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
+crs(Colombia) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
 plot(Colombia, border="grey", axes=TRUE,col="green")
 Colab<-datos51[Colombia, ]
 plot(Colab, add=T, col="blue", pch=20, cex=0.9)
@@ -48,6 +49,7 @@ north.arrow(xb=-78, yb=10, len=1, lab="N",cex.lab=0.8,col="black")
 map.scale (xc=-80, yc=-3, ft2km(9000), "300 km", 1, 1)
 
 ###FUENTE DE LOS DATOS - Modificado de: ############
+### ASesoría: https://github.com/anarvaezv
 ## Chamberlain, S. (2017). rgbif: Interface to the Global Biodiversity Information Facility API. R package version 0.9.8. https://CRAN.R-project.org/package=rgbif
 ##Hijmans, R. J., & Elith, J. (2015). Species distribution modeling with R. https://cran.r-project.org/web/packages/dismo/vignettes/sdm.pdf. 
 ## Noguera, E. (2015). Descarga y limpieza de datos GBIF en R Cran. https://sites.google.com/site/elkalexnoguera/home/Trucos_R_Cran/descarga-y-limpieza-de-datos-gbif-en-r-cran
