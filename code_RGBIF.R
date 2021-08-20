@@ -14,9 +14,7 @@ loadandinstall ("RColorBrewer")
 loadandinstall ("MASS")
 loadandinstall ("GISTools")
 loadandinstall ("rgdal")
-
 loadandinstall ("Rccp")
-
 loadandinstall ("raster")
 loadandinstall ("dismo")
 
