@@ -23,7 +23,7 @@ loadandinstall ("dismo")
 sp<- gbif("Buteo albigula", download = T, geo = T, sp=F)
 head(name_suggest(q='Buteo albigula'))
 ek<-occ_search(taxonKey= 2480535,return="all",limit=200000,hasCoordinate=TRUE)
-write.csv(c(ek$data,ek$meta),file="C:/Users/fam/Downloads/Mapas_datosGBIF/datos_GBIF/Buteo albigula.csv")
+write.csv(c(ek$data,ek$meta),file="C:/Users/fam/Downloads/Mapas_datosGBIF/datos_GBIF/Buteo_albigula.csv")
 datos<-cbind(ek$data,ek$meta)
 dups <- duplicated(datos[,3:4])
 datos2<-cbind(dups,datos)
@@ -52,6 +52,57 @@ plot(Colab, add=T, col="blue", pch=20, cex=0.9)
 title(main= "Registros en Colombia de Buteo albigula desde GBIF", cex.main = 1, font.main = 1)
 north.arrow(xb=-78, yb=10, len=0.5, lab="N",cex.lab=0.8,col="black")
 map.scale (xc=-80, yc=-3, ft2km(9000), "300 km", 1, 1)
+
+##Si quiero con otro país, por ejemplo Peru, ojo en inglés el nombre.
+Peru<-wrld_simpl[wrld_simpl$NAME=="Peru", ]
+crs(datos51) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
+crs(Peru) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
+plot(Peru, border="grey", axes=TRUE,col="green")
+Perab<-datos51[Peru, ]
+plot(Perab, add=T, col="blue", pch=20, cex=0.9)
+title(main= "Registros en Peru de Buteo albigula desde GBIF", cex.main = 1, font.main = 1)
+north.arrow(xb=-80, yb=-2, len=0.5, lab="N",cex.lab=0.8,col="black")
+map.scale (xc=-80, yc=-15, ft2km(9000), "300 km", 1, 1)
+
+### Cuando tengo dos especies
+head(name_suggest(q='Eretmochelys imbricata')) 
+ek<-occ_search(taxonKey= 8841716,return="all",limit=200000,hasCoordinate=TRUE)
+write.csv(c(ek$data,ek$meta),file="C:/Users/fam/Downloads/Mapas/datos_AVES/Eretmochelys imbricata.csv")
+datos<-cbind(ek$data,ek$meta)
+dups <- duplicated(datos[,3:4])
+datos2<-cbind(dups,datos)
+datos3<-subset(datos,!duplicated(datos[,3:4]))
+datos4<-datos3[complete.cases(datos3[,3:4]),]
+datos5<-datos4[(datos4[,3:4]>0.00000 | datos4[,3:4]<0.00000),]
+datos5<-datos5[complete.cases(datos5[,3:4]),]
+datos5<-datos5[complete.cases(datos5[,3:4]),]
+datos51<-datos5[!is.na(datos5$decimalLatitude),]
+coordinates(datos51)<- ~decimalLongitude+decimalLatitude
+
+head(name_suggest(q='Lepidochelys olivacea')) 
+ek2<-occ_search(taxonKey= 2442153,return="all",limit=200000,hasCoordinate=TRUE)
+write.csv(c(ek2$data,ek2$meta),file="C:/Users/fam/Downloads/Mapas/datos_AVES/L olivacea.csv")
+datos2<-cbind(ek2$data,ek2$meta)
+dups2 <- duplicated(datos2[,3:4])
+datos2b<-cbind(dups2,datos2)
+datos3b<-subset(datos2b,!duplicated(datos2b[,3:4]))
+datos4b<-datos3b[complete.cases(datos3b[,3:4]),]
+datos5b<-datos4b[(datos4b[,3:4]>0.00000 | datos4b[,3:4]<0.00000),]
+datos5b<-datos5b[complete.cases(datos5b[,3:4]),]
+datos5b<-datos5b[complete.cases(datos5b[,3:4]),]
+datos51b<-datos5b[!is.na(datos5b$decimalLatitude),]
+coordinates(datos51b)<- ~decimalLongitude+decimalLatitude
+
+data(wrld_simpl)
+plot(wrld_simpl)
+plot(datos51[,3])
+plot(datos51b[,3])
+mapa<-plot(wrld_simpl,xlim=c(-150,150),ylim=c(-100,100),axes=TRUE,col="white")
+puntos<-points(datos51$decimalLongitude,datos5$decimalLatitude, col="red", pch=20, cex=1.5)
+puntos2<-points(datos51b$decimalLongitude,datos5b$decimalLatitude, col="blue", pch=20, cex=0.9)
+title(main= "Registros mundiales de E imbricata y L olivacea", cex.main = 1, font.main = 1)
+north.arrow(xb=-140, yb=90, len=3, lab="N",cex.lab=0.8,col='black')
+map.scale(xc=-130, yc=-50,ft2km(28000),"10000 Km", 1, 1)
 
 ###FUENTE DE LOS DATOS - Modificado de: ############
 ### ASesoría: https://github.com/anarvaezv
