@@ -4,15 +4,20 @@ setwd(ruta.datos)
 
 loadandinstall <- function(mypkg) {if (!is.element(mypkg, installed.packages()[,1])){install.packages(mypkg)}; library(mypkg, character.only=TRUE)  }
 loadandinstall ("rgbif")
+loadandinstall ("sp")
 loadandinstall ("maptools")
 loadandinstall ("rgeos")
 loadandinstall ("ggplot2")
 loadandinstall ("rworldmap")
 loadandinstall ("rworldxtra")
+loadandinstall ("RColorBrewer")
+loadandinstall ("MASS")
 loadandinstall ("GISTools")
-loadandinstall ("raster")
 loadandinstall ("rgdal")
-loadandinstall ("sp")
+
+loadandinstall ("Rccp")
+
+loadandinstall ("raster")
 loadandinstall ("dismo")
 
 sp<- gbif("Buteo albigula", download = T, geo = T, sp=F)
