@@ -63,9 +63,10 @@ north.arrow(xb=-80, yb=-2, len=0.5, lab="N",cex.lab=0.8,col="black")
 map.scale (xc=-80, yc=-15, ft2km(9000), "300 km", 1, 1)
 
 ### Cuando tengo dos especies
-head(name_suggest(q='Eretmochelys imbricata')) 
-ek<-occ_search(taxonKey= 8841716,return="all",limit=200000,hasCoordinate=TRUE)
-write.csv(c(ek$data,ek$meta),file="C:/Users/fam/Downloads/Mapas/datos_AVES/Eretmochelys imbricata.csv")
+sp<- gbif("Cephalopterus penduliger", download = T, geo = T, sp=F)
+head(name_suggest(q='Cephalopterus penduliger')) 
+ek<-occ_search(taxonKey= 5959195,return="all",limit=200000,hasCoordinate=TRUE)
+write.csv(c(ek$data,ek$meta),file="C:/Users/fam/Downloads/Mapas/AVES/Cephalopterus penduliger.csv")
 datos<-cbind(ek$data,ek$meta)
 dups <- duplicated(datos[,3:4])
 datos2<-cbind(dups,datos)
@@ -77,9 +78,10 @@ datos5<-datos5[complete.cases(datos5[,3:4]),]
 datos51<-datos5[!is.na(datos5$decimalLatitude),]
 coordinates(datos51)<- ~decimalLongitude+decimalLatitude
 
-head(name_suggest(q='Lepidochelys olivacea')) 
-ek2<-occ_search(taxonKey= 2442153,return="all",limit=200000,hasCoordinate=TRUE)
-write.csv(c(ek2$data,ek2$meta),file="C:/Users/fam/Downloads/Mapas/datos_AVES/L olivacea.csv")
+sp<- gbif("Puffinus nativitatis", download = T, geo = T, sp=F)
+head(name_suggest(q='Puffinus nativitatis ')) 
+ek2<-occ_search(taxonKey= 5229340,return="all",limit=200000,hasCoordinate=TRUE)
+write.csv(c(ek2$data,ek2$meta),file="C:/Users/fam/Downloads/Mapas/AVES/Puffinus nativitatis.csv")
 datos2<-cbind(ek2$data,ek2$meta)
 dups2 <- duplicated(datos2[,3:4])
 datos2b<-cbind(dups2,datos2)
@@ -98,9 +100,9 @@ plot(datos51b[,3])
 mapa<-plot(wrld_simpl,xlim=c(-150,150),ylim=c(-100,100),axes=TRUE,col="white")
 puntos<-points(datos51$decimalLongitude,datos5$decimalLatitude, col="red", pch=20, cex=1.5)
 puntos2<-points(datos51b$decimalLongitude,datos5b$decimalLatitude, col="blue", pch=20, cex=0.9)
-title(main= "Registros mundiales de E imbricata y L olivacea", cex.main = 1, font.main = 1)
-north.arrow(xb=-140, yb=90, len=3, lab="N",cex.lab=0.8,col='black')
-map.scale(xc=-130, yc=-50,ft2km(28000),"10000 Km", 1, 1)
+title(main= "Registros mundiales de Cephalopterus penduliger (rojo) y Puffinus nativitatis (azul) ", cex.main = 1, font.main = 1)
+north.arrow(xb=-140, yb=95, len=3, lab="N",cex.lab=0.8,col='black')
+map.scale(xc=-130, yc=-30,ft2km(28000),"10000 Km", 1, 1)
 
 ###FUENTE DE LOS DATOS - Modificado de: ############
 ### ASesoría: https://github.com/anarvaezv
