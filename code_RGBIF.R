@@ -1,7 +1,10 @@
+## Escoger el directorio de trabajo
 dir.principal<-"C:/Downloads/Mapas"
 ruta.datos<- paste(dir.principal, "/datos_AVES/", sep="")
 setwd(ruta.datos)
 
+##Install lybraries (Instalar bibliotecas)
+##Option 1
 loadandinstall <- function(mypkg) {if (!is.element(mypkg, installed.packages()[,1])){install.packages(mypkg)}; library(mypkg, character.only=TRUE)  }
 loadandinstall ("rgbif")
 loadandinstall ("sp")
@@ -18,6 +21,11 @@ loadandinstall ("Rccp")
 loadandinstall ("raster")
 loadandinstall ("dismo")
 
+##Option 2
+library("pacman")
+p_load("sf", "raster", "sp", "dplyr", "ggplot2")
+
+##Download data from GBIF (Descargar datos desde GBIF)
 sp<- gbif("Buteo albigula", download = T, geo = T, sp=F)
 head(name_suggest(q='Buteo albigula'))
 ek<-occ_search(taxonKey= 2480535,return="all",limit=200000,hasCoordinate=TRUE)
@@ -32,6 +40,7 @@ datos5<-datos5[complete.cases(datos5[,3:4]),]
 datos51<-datos5[!is.na(datos5$decimalLatitude),]
 coordinates(datos51)<- ~decimalLongitude+decimalLatitude
 
+##Plot the data of the chosen species on a world map (Graficar los datos de la especie escogida en un mapa mundial.)
 data(wrld_simpl)
 plot(wrld_simpl)
 plot(datos51[,3])
@@ -41,6 +50,7 @@ title(main= "Registros a nivel mundial de Buteo albigula desde GBIF", cex.main =
 north.arrow(xb=-100, yb=100, len=3, lab="N",cex.lab=0.8,col="black")
 map.scale (xc=-130, yc=-50, ft2km(280000), "10000 km", 1, 1)
 
+##Plot the data of the chosen species on a country map, for example Colombia (Graficar los datos de la especie escogida en un mapa de un país, por ejemplo Colombia.)
 Colombia<-wrld_simpl[wrld_simpl$NAME=="Colombia", ]
 crs(datos51) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
 crs(Colombia) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
@@ -51,7 +61,7 @@ title(main= "Registros en Colombia de Buteo albigula desde GBIF", cex.main = 1, 
 north.arrow(xb=-78, yb=10, len=0.5, lab="N",cex.lab=0.8,col="black")
 map.scale (xc=-80, yc=-3, ft2km(9000), "300 km", 1, 1)
 
-##Si quiero con otro país, por ejemplo Peru, ojo en inglés el nombre.
+##Download data of my specie in other country (Descargar datos de mi espeie en otro país, por ejemplo Peru, ojo en inglés el nombre.)
 Peru<-wrld_simpl[wrld_simpl$NAME=="Peru", ]
 crs(datos51) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
 crs(Peru) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
@@ -62,7 +72,7 @@ title(main= "Registros en Peru de Buteo albigula desde GBIF", cex.main = 1, font
 north.arrow(xb=-80, yb=-2, len=0.5, lab="N",cex.lab=0.8,col="black")
 map.scale (xc=-80, yc=-15, ft2km(9000), "300 km", 1, 1)
 
-### Cuando tengo dos especies
+### If a want plot two species in a same map (Si quiero graficar dos especies diferentes en un mismo mapa)
 sp<- gbif("Cephalopterus penduliger", download = T, geo = T, sp=F)
 head(name_suggest(q='Cephalopterus penduliger')) 
 ek<-occ_search(taxonKey= 5959195,return="all",limit=200000,hasCoordinate=TRUE)
