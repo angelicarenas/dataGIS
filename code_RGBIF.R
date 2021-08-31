@@ -114,8 +114,30 @@ title(main= "Registros mundiales de Cephalopterus penduliger (rojo) y Puffinus n
 north.arrow(xb=-140, yb=95, len=3, lab="N",cex.lab=0.8,col='black')
 map.scale(xc=-130, yc=-30,ft2km(28000),"10000 Km", 1, 1)
 
+##Upload specific layers, for example Colombia (Cargar una capa de Colombia con regiones especificas)
+## Download layers of https://geoportal.igac.gov.co/contenido/consulta-de-planchas or https://geoportal.igac.gov.co/
+##Read the file Shapefile
+col<-st-read(file.chose())
+View(col)
+names(col)
+ggplot2:: ggplot(col)+
+geom_sf()
+
+##Extraer capa de departamentos
+tol <-col %>% filter(DPTO_CNMBR == "TOLIMA")
+View (tol)
+plot (tol)
+ggplot2::ggplot(Tol)+
+geom_sf()
+
+##Extraer capa de municipio en un departamento
+mun <- tol %>% filter (MPIO_CNMBR %in% c(2VILLAHERMOSA", "IBAGUE"))
+ggplot2:: ggplot(mun)+
+geom sf()
+
 ###FUENTE DE LOS DATOS - Modificado de: ############
 ### ASesoría: https://github.com/anarvaezv
 ## Chamberlain, S. (2017). rgbif: Interface to the Global Biodiversity Information Facility API. R package version 0.9.8. https://CRAN.R-project.org/package=rgbif
 ##Hijmans, R. J., & Elith, J. (2015). Species distribution modeling with R. https://cran.r-project.org/web/packages/dismo/vignettes/sdm.pdf. 
 ## Noguera, E. (2015). Descarga y limpieza de datos GBIF en R Cran. https://sites.google.com/site/elkalexnoguera/home/Trucos_R_Cran/descarga-y-limpieza-de-datos-gbif-en-r-cran
+## Grajales, eduardo (2021) Seleccionar en Qgis y Filtrar en R shapes de áreas de interés https://www.youtube.com/watch?v=rWdJSg5Gu9c
