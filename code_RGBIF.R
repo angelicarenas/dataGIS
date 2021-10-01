@@ -1,6 +1,6 @@
 ## Escoger el directorio de trabajo
 dir.principal<-"C:/Downloads/Mapas"
-ruta.datos<- paste(dir.principal, "/datos_AVES/", sep="")
+ruta.datos<- paste(dir.principal, "/datos/", sep="")
 setwd(ruta.datos)
 
 ##Install lybraries (Instalar bibliotecas)
@@ -29,7 +29,7 @@ p_load("sf", "raster", "sp", "dplyr", "ggplot2")
 sp<- gbif("Buteo albigula", download = T, geo = T, sp=F)
 head(name_suggest(q='Buteo albigula'))
 ek<-occ_search(taxonKey= 2480535,return="all",limit=200000,hasCoordinate=TRUE)
-write.csv(c(ek$data,ek$meta),file="C:/Users/fam/Downloads/Mapas_datosGBIF/datos_GBIF/Buteo_albigula.csv")
+write.csv(c(ek$data,ek$meta),file="C:/Users/fam/Downloads/Mapas/datos/Buteo_albigula.csv")
 datos<-cbind(ek$data,ek$meta)
 dups <- duplicated(datos[,3:4])
 datos2<-cbind(dups,datos)
