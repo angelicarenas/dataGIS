@@ -1,4 +1,4 @@
-## Escoger el directorio de trabajo
+## Escoger el directorio de trabajo (EJEMPLO:)
 dir.principal<-"C:/Downloads/Mapas"
 ruta.datos<- paste(dir.principal, "/datos/", sep="")
 setwd(ruta.datos)
