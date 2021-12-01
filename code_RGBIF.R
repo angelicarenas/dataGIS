@@ -1,3 +1,4 @@
+## Código para descargar datos desde GBIF usando R
 ## Escoger el directorio de trabajo (EJEMPLO:)
 dir.principal<-"C:/Downloads/Mapas"
 ruta.datos<- paste(dir.principal, "/datos/", sep="")
@@ -22,6 +23,7 @@ loadandinstall ("raster")
 loadandinstall ("dismo")
 
 ##Option 2
+install.packages("pacman")
 library("pacman")
 p_load("sf", "raster", "sp", "dplyr", "ggplot2")
 
