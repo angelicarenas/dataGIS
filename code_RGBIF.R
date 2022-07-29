@@ -4,31 +4,13 @@ dir.principal<-"C:/Downloads/Mapas"
 ruta.datos<- paste(dir.principal, "/datos/", sep="")
 setwd(ruta.datos)
 
-##Install lybraries (Instalar bibliotecas)
-##Option 1
-loadandinstall <- function(mypkg) {if (!is.element(mypkg, installed.packages()[,1])){install.packages(mypkg)}; library(mypkg, character.only=TRUE)  }
-loadandinstall ("rgbif")
-loadandinstall ("sp")
-loadandinstall ("rgeos")
-loadandinstall ("maptools")
-loadandinstall ("ggplot2")
-loadandinstall ("rworldmap")
-loadandinstall ("rworldxtra")
-loadandinstall ("RColorBrewer")
-loadandinstall ("MASS")
-loadandinstall ("GISTools")
-loadandinstall ("rgdal")
-loadandinstall ("raster")
-loadandinstall ("dismo")
-
-##Option 2
+##Install packages
 install.packages("pacman")
 library("pacman")
-p_load("sf", "raster", "sp", "dplyr", "ggplot2")
+p_load("sf", "raster", "sp", "dplyr", "ggplot2", "rgbif","rgeos", "maptools", "rworldmap","rworldxtra","RColorBrewer", "MASS", "GISTools","rgdal","dismo")
 
 ##Download data from GBIF (Descargar datos desde GBIF)
-sp<- gbif("Dendropsophus molitor", download = T, geo = T, sp=F)
-head(name_suggest(q='Buteo albigula'))
+head(name_suggest(q='Dendropsophus molitor'))
 ek<-occ_search(taxonKey= 2480535,return="all",limit=200000,hasCoordinate=TRUE)
 write.csv(c(ek$data,ek$meta),file="C:/Users/fam/Downloads/Mapas/datos/Dendropsophus_molitor.csv")
 datos<-cbind(ek$data,ek$meta)
@@ -41,7 +23,7 @@ datos5<-datos5[complete.cases(datos5[,3:4]),]
 datos51<-datos5[!is.na(datos5$decimalLatitude),]
 coordinates(datos51)<- ~decimalLongitude+decimalLatitude
 
-##Plot the data of the chosen species on a world map (Graficar los datos de la especie escogida en un mapa mundial.)
+##Plot the data of the chosen species on a world map (Graficar los datos de la especie escogida en un mapa mundial)
 data(wrld_simpl)
 plot(wrld_simpl)
 plot(datos51[,3])
@@ -51,25 +33,61 @@ title(main= "Registros a nivel mundial de Dendropsophus molitor desde GBIF", cex
 north.arrow(xb=-100, yb=100, len=3, lab="N",cex.lab=0.8,col="black")
 map.scale (xc=-130, yc=-50, ft2km(280000), "10000 km", 1, 1)
 
-##Plot the data of the chosen species on a country map, for example Colombia (Graficar los datos de la especie escogida en un mapa de un país, por ejemplo Colombia.)
+##Plot the data of the chosen species on a country map, for example Colombia (Graficar los datos de la especie escogida en un mapa de un país, por ejemplo Colombia)
 Colombia<-wrld_simpl[wrld_simpl$NAME=="Colombia", ]
 crs(datos51) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
 crs(Colombia) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
 plot(Colombia, border="grey", axes=TRUE,col="green")
 Colab<-datos51[Colombia, ]
 plot(Colab, add=T, col="blue", pch=20, cex=0.9)
-title(main= "Registros en Colombia de Buteo albigula desde GBIF", cex.main = 1, font.main = 1)
+title(main= "Registros en Colombia de Dendropsophus molitor desde GBIF", cex.main = 1, font.main = 1)
 north.arrow(xb=-78, yb=10, len=0.5, lab="N",cex.lab=0.8,col="black")
 map.scale (xc=-80, yc=-3, ft2km(9000), "300 km", 1, 1)
 
-##Download data of my specie in other country (Descargar datos de mi espeie en otro país, por ejemplo Peru, ojo en inglés el nombre.)
-Peru<-wrld_simpl[wrld_simpl$NAME=="Peru", ]
+##Plot the data with other species on a other country map, for example Ecuador (Graficar los datos de la otra especie en un mapa de otro país, por ejemplo Ecuador)
+head(name_suggest(q='Dendropsophus padreluna'))
+ekE<-occ_search(taxonKey= 2428529,return="all",limit=200000,hasCoordinate=TRUE)
+write.csv(c(ekE$data,ekE$meta),file="C:/Users/fam/Downloads/Mapas/datos/Dendropsophus_padreluna.csv")
+datosE<-cbind(ekE$data,ekE$meta)
+dupsE<- duplicated(datosE[,3:4])
+datos2E<-cbind(dups,datosE)
+datos3E<-subset(datosE,!duplicated(datos[,3:4]))
+datos4E<-datos3E[complete.cases(datos3E[,3:4]),]
+datos5E<-datos4E[(datos4E[,3:4]>0.00000 | datos4E[,3:4]<0.00000),]
+datos5E<-datos5E[complete.cases(datos5E[,3:4]),]
+datos51E<-datos5E[!is.na(datos5E$decimalLatitude),]
+coordinates(datos51E)<- ~decimalLongitude+decimalLatitude
+
+data(wrld_simpl)
+plot(wrld_simpl)
+plot(datos51E[,3])
+mapaE<-plot(wrld_simpl,xlim=c(-150,150),ylim=c(-90,90),axes=TRUE,col="green")
+puntosE<-points(datos51$decimalLongitude,datos5$decimalLatitude, col="red", pch=20, cex=0.9)
+title(main= "Registros a nivel mundial de Dendropsophus molitor desde GBIF", cex.main = 1, font.main = 1)
+north.arrow(xb=-100, yb=100, len=3, lab="N",cex.lab=0.8,col="black")
+map.scale (xc=-130, yc=-50, ft2km(280000), "10000 km", 1, 1)
+
+Ecuador<-wrld_simpl[wrld_simpl$NAME=="Ecuador", ]
+crs(datos51E) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
+crs(Ecuador) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
+plot(Ecuador, border="grey", axes=TRUE,col="green")
+Ecuab<-datos51E[Ecuador, ]
+plot(Ecuab, add=T, col="blue", pch=20, cex=0.9)
+title(main= "Registros en Ecuador de Dendropsophus padreluna desde GBIF", cex.main = 1, font.main = 1)
+north.arrow(xb=-78, yb=10, len=0.5, lab="N",cex.lab=0.8,col="black")
+map.scale (xc=-80, yc=-3, ft2km(9000), "300 km", 1, 1)
+
+
+
+
+##Download data of my specie in other country (Descargar datos de mi especie en otro país, por ejemplo Ecuador, ojo en inglés el nombre.)
+Ecuador<-wrld_simpl[wrld_simpl$NAME=="Ecuador", ]
 crs(datos51) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
-crs(Peru) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
-plot(Peru, border="grey", axes=TRUE,col="green")
-Perab<-datos51[Peru, ]
-plot(Perab, add=T, col="blue", pch=20, cex=0.9)
-title(main= "Registros en Peru de Dendropsophus molitor desde GBIF", cex.main = 1, font.main = 1)
+crs(Ecuador) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
+plot(Ecuador, border="grey", axes=TRUE,col="green")
+Ecuab<-datos51[Ecuador, ]
+plot(Ecuab, add=T, col="blue", pch=20, cex=0.9)
+title(main= "Registros en Ecuador de Dendropsophus molitor desde GBIF", cex.main = 1, font.main = 1)
 north.arrow(xb=-80, yb=-2, len=0.5, lab="N",cex.lab=0.8,col="black")
 map.scale (xc=-80, yc=-15, ft2km(9000), "300 km", 1, 1)
 
