@@ -4,14 +4,37 @@ dir.principal<-"C:/Downloads/Mapas"
 ruta.datos<- paste(dir.principal, "/datos/", sep="")
 setwd(ruta.datos)
 
-##Install packages
+##Install packages Option 1
 install.packages("pacman")
 library("pacman")
-p_load("sf", "raster", "sp", "dplyr", "ggplot2", "rgbif","rgeos", "maptools", "rworldmap","rworldxtra","RColorBrewer", "MASS", "GISTools","rgdal","dismo")
+p_load("sf", "raster", "sp", "dplyr", "ggplot2", "rgbif","rgeos", "maptools", "rworldmap","rworldxtra","RColorBrewer", "MASS","rgdal","dismo", "maps")
+##Wait!!! 
+
+install.packages("GISTools")
+library("GISTools")
+
+##Install packages Option 2
+loadandinstall <- function(mypkg) {if (!is.element(mypkg, installed.packages()[,1])){install.packages(mypkg)}; library(mypkg, character.only=TRUE)  }
+loadandinstall ("rgbif")
+loadandinstall ("sp")
+loadandinstall ("rgeos")
+loadandinstall ("maptools")
+loadandinstall ("ggplot2")
+loadandinstall ("rworldmap")
+loadandinstall ("rworldxtra")
+loadandinstall ("RColorBrewer")
+loadandinstall ("MASS")
+loadandinstall ("GISTools")
+loadandinstall ("rgdal")
+loadandinstall ("raster")
+loadandinstall ("dismo")
+loadandinstall ("maps")
 
 ##Download data from GBIF (Descargar datos desde GBIF)
 head(name_suggest(q='Dendropsophus molitor'))
-ek<-occ_search(taxonKey= 2480535,return="all",limit=200000,hasCoordinate=TRUE)
+ek<-occ_search(taxonKey= 10704158,return="all",limit=200000,hasCoordinate=TRUE)
+##Wait!!! 
+
 write.csv(c(ek$data,ek$meta),file="C:/Users/fam/Downloads/Mapas/datos/Dendropsophus_molitor.csv")
 datos<-cbind(ek$data,ek$meta)
 dups <- duplicated(datos[,3:4])
@@ -50,8 +73,8 @@ ekE<-occ_search(taxonKey= 2428529,return="all",limit=200000,hasCoordinate=TRUE)
 write.csv(c(ekE$data,ekE$meta),file="C:/Users/fam/Downloads/Mapas/datos/Dendropsophus_padreluna.csv")
 datosE<-cbind(ekE$data,ekE$meta)
 dupsE<- duplicated(datosE[,3:4])
-datos2E<-cbind(dups,datosE)
-datos3E<-subset(datosE,!duplicated(datos[,3:4]))
+datos2E<-cbind(dupsE,datosE)
+datos3E<-subset(datosE,!duplicated(datosE,3:4]))
 datos4E<-datos3E[complete.cases(datos3E[,3:4]),]
 datos5E<-datos4E[(datos4E[,3:4]>0.00000 | datos4E[,3:4]<0.00000),]
 datos5E<-datos5E[complete.cases(datos5E[,3:4]),]
@@ -62,7 +85,7 @@ data(wrld_simpl)
 plot(wrld_simpl)
 plot(datos51E[,3])
 mapaE<-plot(wrld_simpl,xlim=c(-150,150),ylim=c(-90,90),axes=TRUE,col="green")
-puntosE<-points(datos51$decimalLongitude,datos5$decimalLatitude, col="red", pch=20, cex=0.9)
+puntosE<-points(datos51EdecimalLongitude,datos5$decimalLatitude, col="red", pch=20, cex=0.9)
 title(main= "Registros a nivel mundial de Dendropsophus molitor desde GBIF", cex.main = 1, font.main = 1)
 north.arrow(xb=-100, yb=100, len=3, lab="N",cex.lab=0.8,col="black")
 map.scale (xc=-130, yc=-50, ft2km(280000), "10000 km", 1, 1)
