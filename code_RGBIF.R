@@ -1,3 +1,66 @@
+## Escoger el directorio de trabajo (EJEMPLO:)
+
+dir.principal<-"C:/Users/yanira sanchez/Downloads/Mapas_datos_GBIF/"
+ruta.datos<- paste(dir.principal, "datos_GBIF/", sep="")
+setwd(ruta.datos)
+
+##Install packages
+
+loadandinstall <- function(mypkg) {if (!is.element(mypkg, installed.packages()[,1])){install.packages(mypkg)}; library(mypkg, character.only=TRUE)  }
+
+loadandinstall  ("raster")
+loadandinstall ("sp")
+loadandinstall  ("rgdal")
+loadandinstall ("MASS")
+loadandinstall ("RColorBrewer")
+loadandinstall ("dismo")
+loadandinstall ("rgbif")
+loadandinstall ("maptools")
+loadandinstall ("rgeos")
+loadandinstall ("ggplot2")
+loadandinstall ("rworldmap")
+loadandinstall ("rworldxtra")
+loadandinstall ("GISTools")
+
+##Download data from GBIF (Descargar datos desde GBIF)
+head(name_suggest(q='Dendropsophus molitor')) 
+ek<-occ_search(taxonKey= 10704158,return="all",limit=200000,hasCoordinate=TRUE)
+
+write.csv(c(ek$data,ek$meta),file="C:/Users/yanira sanchez/Downloads/Mapas_datos_GBIF/Dendropsophus molitor.csv")
+datos<-cbind(ek$data,ek$meta)
+dups <- duplicated(datos[,3:4])
+datos2<-cbind(dups,datos)
+datos3<-subset(datos,!duplicated(datos[,3:4]))
+datos4<-datos3[complete.cases(datos3[,3:4]),]
+datos5<-datos4[(datos4[,3:4]>0.00000 | datos4[,3:4]<0.00000),]
+datos5<-datos5[complete.cases(datos5[,3:4]),]
+datos5<-datos5[complete.cases(datos5[,3:4]),]
+datos51<-datos5[!is.na(datos5$decimalLatitude),]
+coordinates(datos51)<- ~decimalLongitude+decimalLatitude
+
+##Graficar los datos de la especie escogida en un mapa mundial
+data(wrld_simpl)
+plot(wrld_simpl)
+plot(datos51[,3])
+mapa<-plot(wrld_simpl,xlim=c(-150,150),ylim=c(-100,100),axes=TRUE,col="green")
+puntos<-points(datos51$decimalLongitude,datos5$decimalLatitude, col="red", pch=20, cex=0.9)
+title(main= "Registro mundial de Dendropsophus molitor", cex.main = 1, font.main = 1)
+north.arrow(xb=-140, yb=90, len=3, lab="N",cex.lab=0.8,col='black')
+map.scale(xc=-130, yc=-50,ft2km(280000),"10000 Km", 1, 1)
+
+##Graficar los datos de la especie escogida en un mapa de un país
+Colombia<-wrld_simpl[wrld_simpl$NAME=="Colombia", ]
+crs(datos51) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
+crs(Colombia) <- "+proj=longlat +ellps=WGS84 +towgs84=0,0,0,0,0,0,0 +no_defs"
+plot(Colombia, border="grey", axes=TRUE,col="green")
+Colab<-datos51[Colombia, ]
+plot(Colab, add=T, col="blue", pch=20, cex=0.9)
+title(main= "Registros en Colombia de Dendropsophus molitor", cex.main = 1, font.main = 1)
+north.arrow(xb=-78, yb=10, len=0.3, lab="N",cex.lab=0.8,col='black')
+map.scale(xc=-80, yc=-3,ft2km(9000),"300 Km", 1, 1)
+
+#########################################################
+
 ## Código para descargar datos desde GBIF usando R
 ## Escoger el directorio de trabajo (EJEMPLO:)
 dir.principal<-"C:/Downloads/Mapas"
